@@ -14,12 +14,17 @@ Routers
 +----------------+------------+-----------------+
 
 
+DHCP:
+- R-SALIDA-ICA brindará servicio dhcp a la LAN ICA, el pool será 172.31.10.0 255.255.255.0, excluyendo el 172.31.10.1
+- R-INTERNO-LIMA brindará servicio dhcp a las VLAN de LIMA, tendrá el pool: 172.20.89.0 255.255.255.0, 172.20.75.0 255.255.255.0, 172.20.24.0 255.255.255.0
+
+
 1. 	Los enlaces punto a punto usaran prefijo /30.
 2. 	Los segmentos donde hay un servidor usaran prefijo /29
 3. 	Las redes LAN usaran direcciones privadas clase B, el resto de la red usara direcciones
 	públicas.
 4. 	El servidor LOCAL debe publicar un sitio web llamado: WWW.FINAL.COM y debe contener
-	el NOMBE DE LA UNIVERSIDAD, FACULTAD, ESCUELA, CURSO, DOCENTE Y LA RAZON POR
+	el NOMBRE DE LA UNIVERSIDAD, FACULTAD, ESCUELA, CURSO, DOCENTE Y LA RAZON POR
 	LA CUAL LE GUSTA MAS ESTE CURSO QUE CUALQUIER OTRO.
 5. 	La LAN LIMA debe tener 3 VLANS (nombre las VLANS), la cantidad de usuarios en cada
 	VLAN no debe ser menor a 300. Solo la VLAN XX puede acceder a las otras VLANs.
@@ -41,3 +46,9 @@ Routers
 14. El servidor DNS solo debe responder a las consultas DNS y a los PING.
 15. El router ISP1 y el router ISP2 solo debe tener permitido ser accedido por TELNET desde
 	LIMA y por SSH desde ICA. 
+
+
+
+
+
+	https://www.tablesgenerator.com/text_tables#

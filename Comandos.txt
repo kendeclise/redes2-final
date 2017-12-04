@@ -70,3 +70,13 @@ network 10.10.17.8 0.0.0.3 area 0
 network 172.31.10.0 0.0.0.255 area 0
 end
 
+== CONFIGURACIÓN DHCP ==
+
+# Router R-SALIDA-ICA
+en
+conf t
+ip dhcp excluded-address 172.31.10.1
+ip dhcp pool ICA
+network 172.31.10.0 255.255.255.0
+default-router 172.31.10.1
+dns-server 8.8.10.2
