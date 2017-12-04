@@ -165,3 +165,79 @@ ip add 172.20.4.1 255.255.254.0
 exit
 
 == CONFIGURACIÓN ACLS/LISTAS DE CONTROL DE ACCESO ==
+
+# Las 3 VLANs pueden accesar al servidor local por HTTP, HTTPS y FTP, pero el servidor no
+responde a sus PING. (R-INTERNO-LIMA)
+
+en
+conf t
+ip access-list extended VLAN-S-INTERNO
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.8.2 eq 80
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.8.2 eq 443
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.8.2 eq 20
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.8.2 eq 21
+deny icmp 172.20.0.0 0.0.1.255 host 8.8.8.2
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.8.2 eq 80
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.8.2 eq 443
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.8.2 eq 20
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.8.2 eq 21
+deny icmp 172.20.2.0 0.0.1.255 host 8.8.8.2
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.8.2 eq 80
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.8.2 eq 443
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.8.2 eq 20
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.8.2 eq 21
+deny icmp 172.20.4.0 0.0.1.255 host 8.8.8.2
+permit ip any any
+exit
+
+int gig0/0
+ip access-group VLAN-S-INTERNO out
+
+
+# El servidor DNS solo debe responder a las consultas DNS y a los PING.
+# El servidor EXTERNO no puede accesar a la red del servidor DNS. (Router 1)
+
+ip access-list extended DNS-ICMP
+deny ip 8.8.9.2 0.0.0.7 8.8.10.0 0.0.0.7
+permit udp any host 8.8.10.2 eq 53
+permit icmp any host 8.8.10.2
+deny ip any host 8.8.10.2
+
+
+int gig0/2
+ip access-group DNS-ICMP out
+
+# La LAN ICA puede acceder al servidor EXTERNO solo por HTTPS y la LAN LIMA por HTTP,
+HTTPS y FTP (Router 5)
+
+en
+conf t
+ip access-list extended S-EXTERNO
+permit tcp 172.31.10.0 0.0.0.255 host 8.8.9.2 eq 443
+deny ip 172.31.10.0 0.0.0.255 host 8.8.9.2
+
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.9.2 eq 80
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.9.2 eq 443
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.9.2 eq 20
+permit tcp 172.20.0.0 0.0.1.255 host 8.8.9.2 eq 21
+deny ip 172.20.0.0 0.0.1.255 host 8.8.9.2
+
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.9.2 eq 80
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.9.2 eq 443
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.9.2 eq 20
+permit tcp 172.20.2.0 0.0.1.255 host 8.8.9.2 eq 21
+deny ip 172.20.2.0 0.0.1.255 host 8.8.9.2
+
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.9.2 eq 80
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.9.2 eq 443
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.9.2 eq 20
+permit tcp 172.20.4.0 0.0.1.255 host 8.8.9.2 eq 21
+deny ip 172.20.4.0 0.0.1.255 host 8.8.9.2
+
+permit ip any any
+exit
+
+int gig0/0
+ip access-group S-EXTERNO out
+
+# 
