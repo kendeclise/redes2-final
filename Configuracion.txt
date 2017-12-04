@@ -1,0 +1,43 @@
+Condiciones:
+XX = 89, YY = 75 , ZZ = 24, PP = 57
+
+Routers
+
++----------------+------------+-----------------+
+| R-INTERNO-LIMA |     Ip     |       Mask      |
++----------------+------------+-----------------+
+|     Gig 0/0    |            |                 |
++----------------+------------+-----------------+	
+|     Gig 0/1    |            |                 |
++----------------+------------+-----------------+
+|     Gig 0/2    | 10.10.10.9 | 255.255.255.252 |
++----------------+------------+-----------------+
+
+
+1. 	Los enlaces punto a punto usaran prefijo /30.
+2. 	Los segmentos donde hay un servidor usaran prefijo /29
+3. 	Las redes LAN usaran direcciones privadas clase B, el resto de la red usara direcciones
+	públicas.
+4. 	El servidor LOCAL debe publicar un sitio web llamado: WWW.FINAL.COM y debe contener
+	el NOMBE DE LA UNIVERSIDAD, FACULTAD, ESCUELA, CURSO, DOCENTE Y LA RAZON POR
+	LA CUAL LE GUSTA MAS ESTE CURSO QUE CUALQUIER OTRO.
+5. 	La LAN LIMA debe tener 3 VLANS (nombre las VLANS), la cantidad de usuarios en cada
+	VLAN no debe ser menor a 300. Solo la VLAN XX puede acceder a las otras VLANs.
+	Las 3 VLANs pueden accesar al servidor local por HTTP, HTTPS y FTP, pero el servidor no
+	responde a sus PING.
+6. 	Implemente NAT dinámico en LIMA, el pool es solo para 5 dispositivos de la VLAN XX. Las
+	otras VLANs no tienen acceso al Internet.
+7. 	Implemente NAT estático para el servidor en la LAN LIMA.
+8. 	Los clientes de las VLANs y los de la LAN ICA deben recibir sus IPs por DHCP del router que
+	Ud. Considere conveniente.
+9. 	Implemente PAT en la LAN ICA.
+10. Configure un cliente de correo en cada una de las PCs mostradas, el nombre de la cuenta
+	de correo debe ser el nombre de los integrantes.
+11. El sitio web del servidor EXTERNO se llamara: WWW.GRUPO.COM y debe contener el
+	NOMBRE COMPLETO y CODIGO de cada uno de los integrantes.
+12. La LAN ICA puede acceder al servidor EXTERNO solo por HTTPS y la LAN LIMA por HTTP,
+	HTTPS y FTP.
+13. El servidor EXTERNO no puede accesar a la red del servidor DNS.
+14. El servidor DNS solo debe responder a las consultas DNS y a los PING.
+15. El router ISP1 y el router ISP2 solo debe tener permitido ser accedido por TELNET desde
+	LIMA y por SSH desde ICA. 
