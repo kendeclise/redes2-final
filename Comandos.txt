@@ -1,3 +1,44 @@
+== CONFIGURACIÓN TELNET y SSH ==
+# Router 1 (ISP2)
+en
+conf t
+hostname ISP1
+enable secret cisco
+
+line vty 0 15
+password cisco
+login
+transport input all
+exit
+
+ip domain-name redes2.com
+crypto key generate rsa
+---> how many its in ... [512]: 1024 
+username admin password cisco
+exit
+
+# Como acceder desde una PC mediante secure shell al dispositivo(router o switch) :
+> ssh -l admin 10.10.11.10
+
+
+# Router 5 (ISP1)
+en
+conf t
+hostname ISP1
+enable secret cisco
+
+line vty 0 15
+password cisco
+login
+transport input all
+exit
+
+ip domain-name redes2.com
+crypto key generate rsa
+---> how many its in ... [512]: 1024 
+username admin password cisco
+exit
+
 == CONFIGURACIÓN OSPF-ROUTERS ==
 # Router R-INTERNO-LIMA
 
@@ -22,7 +63,7 @@ network 10.10.11.8 0.0.0.3 area 0
 network 10.10.12.8 0.0.0.3 area 0
 end
 
-# Router Router5
+# Router Router5(ISP1)
 en
 conf t
 router ospf 1
@@ -32,7 +73,7 @@ network 10.10.16.8 0.0.0.3 area 0
 network 8.8.9.0 0.0.0.7 area 0
 end
 
-# Router Router1
+# Router Router1(ISP2)
 en
 conf t
 router ospf 1
@@ -240,4 +281,16 @@ exit
 int gig0/0
 ip access-group S-EXTERNO out
 
-# 
+# El router ISP1 y el router ISP2 solo debe tener permitido ser accedido por TELNET desde
+LIMA y por SSH desde ICA. 
+
+en
+conf t
+ip access-list extended LINE-VTY
+permit tcp 172.20.0.0 0.0.1.255 any eq 23
+permit tcp 172.31.10.0 0.0.0.255 any eq 22
+exit
+
+line vty 0 15
+access-class LINE-VTY in
+exit
