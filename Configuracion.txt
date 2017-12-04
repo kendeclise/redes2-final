@@ -15,8 +15,10 @@ Routers
 
 
 DHCP:
-- R-SALIDA-ICA brindará servicio dhcp a la LAN ICA, el pool será 172.31.10.0 255.255.255.0, excluyendo el 172.31.10.1
-- R-INTERNO-LIMA brindará servicio dhcp a las VLAN de LIMA, tendrá el pool: 172.20.89.0 255.255.255.0, 172.20.75.0 255.255.255.0, 172.20.24.0 255.255.255.0
+- R-SALIDA-ICA brindará servicio dhcp a la LAN ICA, el pool será 172.31.10.0 255.255.255.0,
+ excluyendo el 172.31.10.1
+- R-INTERNO-LIMA brindará servicio dhcp a las VLAN de LIMA, tendrá el pool: 172.20.0.0 255.255.254.0,
+ 172.20.2.0 255.255.254.0, 172.20.4.0 255.255.254.0 excluyendo 172.20.0.1, 172.20.2.1, 172.20.4.1
 
 
 1. 	Los enlaces punto a punto usaran prefijo /30.

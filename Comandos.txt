@@ -163,3 +163,5 @@ int gig0/1.24
 encapsulation dot1q 24
 ip add 172.20.4.1 255.255.254.0
 exit
+
+== CONFIGURACIÓN ACLS/LISTAS DE CONTROL DE ACCESO ==
