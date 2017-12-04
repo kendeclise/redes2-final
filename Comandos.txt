@@ -1,1 +1,72 @@
-comandos.txt
+== CONFIGURACIÓN OSPF-ROUTERS ==
+# Router R-INTERNO-LIMA
+
+en
+conf t
+router ospf 1
+router-id 1.1.1.1
+network 8.8.8.0 0.0.0.7 area 0 
+network 10.10.10.8 0.0.0.3 area 0 
+network 172.20.10.0 0.0.0.255 area 0 
+end
+
+# Router R-SALIDA-LIMA
+en
+conf t
+router ospf 1
+router-id 2.2.2.2
+network 10.10.10.8 0.0.0.3 area 0
+network 10.10.11.8 0.0.0.3 area 0
+network 10.10.12.8 0.0.0.3 area 0
+end
+
+# Router Router5
+en
+conf t
+router ospf 1
+router-id 3.3.3.3
+network 10.10.12.8 0.0.0.3 area 0
+network 10.10.16.8 0.0.0.3 area 0
+network 8.8.9.0 0.0.0.7 area 0
+end
+
+# Router Router1
+en
+conf t
+router ospf 1
+router-id 4.4.4.4
+network 10.10.11.8 0.0.0.3 area 0
+network 10.10.13.8 0.0.0.3 area 0
+network 10.10.14.8 0.0.0.3 area 0
+network 8.8.10.0 0.0.0.7 area 0
+end
+
+# Router Router2
+en
+conf t
+router ospf 1
+router-id 5.5.5.5
+network 10.10.14.8 0.0.0.3 area 0
+network 10.10.16.8 0.0.0.3 area 0
+network 10.10.17.8 0.0.0.3 area 0
+end
+
+# Router Router0
+en
+conf t
+router ospf 1
+router-id 6.6.6.6
+network 10.10.13.8 0.0.0.3 area 0
+network 10.10.15.8 0.0.0.3 area 0
+end
+
+# Router R-SALIDA-ICA
+en
+conf t
+router ospf 1
+router-id 7.7.7.7
+network 10.10.15.8 0.0.0.3 area 0
+network 10.10.17.8 0.0.0.3 area 0
+network 172.31.10.0 0.0.0.255 area 0
+end
+

@@ -4,7 +4,7 @@ Integrantes
 
 - Jorge Luis Bustamante Jara(365189)
 - Jhon Carlos Romo Ramírez(365875)
-- Alonso Alberto Sánchez Aranda()
-- Luis Miguel Salvador Salinas Arévalo()
+- Alonso Alberto Sánchez Aranda(365524)
+- Luis Miguel Salvador Salinas Arévalo(369657)
 
 
