@@ -7,7 +7,9 @@ router ospf 1
 router-id 1.1.1.1
 network 8.8.8.0 0.0.0.7 area 0 
 network 10.10.10.8 0.0.0.3 area 0 
-network 172.20.10.0 0.0.0.255 area 0 
+network 172.20.0.0 0.0.1.255 area 0 
+network 172.20.2.0 0.0.1.255 area 0 
+network 172.20.4.0 0.0.1.255 area 0 
 end
 
 # Router R-SALIDA-LIMA
@@ -80,3 +82,84 @@ ip dhcp pool ICA
 network 172.31.10.0 255.255.255.0
 default-router 172.31.10.1
 dns-server 8.8.10.2
+
+# Router R-INTERNO-LIMA
+en
+conf t
+ip dhcp excluded-address 172.20.0.1
+ip dhcp excluded-address 172.20.2.1
+ip dhcp excluded-address 172.20.4.1
+ip dhcp pool LIMA-VLAN89
+network 172.20.0.0 255.255.254.0
+default-router 172.20.0.1
+dns-server 8.8.10.2
+exit
+ip dhcp pool LIMA-VLAN75
+network 172.20.2.0 255.255.254.0
+default-router 172.20.2.1
+dns-server 8.8.10.2
+exit
+ip dhcp pool LIMA-VLAN24
+network 172.20.4.0 255.255.254.0
+default-router 172.20.4.1
+dns-server 8.8.10.2
+exit
+
+
+== CONFIGURACIÓN VLANS ==
+
+# Switch SW-LIMA
+
+# Creando las vlans y agregando las interfaces respectivas
+en
+conf t
+vlan 89
+name VLAN89
+exit
+vlan 75
+name VLAN75
+exit
+vlan 24
+name VLAN24
+exit
+int fa0/18
+switchport mode access
+switchport access vlan 89
+exit
+int fa0/8
+switchport mode access
+switchport access vlan 75
+exit
+int fa0/19
+switchport mode access
+switchport access vlan 24
+exit
+
+# Agregando el modotrunk a la interface que conecta con el router R-INTERNO-LIMA
+en
+conf t
+int gig0/1
+switchport mode trunk
+exit
+
+# Configurando el router(gateways) R-INTERNO-LIMA
+# Gateway vlan89 ( Red: 172.20.0.0 /23, Gateway: 172.20.0.1, Rangos 172.20.0.1 - 172.20.1.254, broadcast: 172.20.1.255)
+# Gateway vlan75 ( Red: 172.20.2.0 /23, Gateway: 172.20.2.1, Rangos 172.20.2.1 - 172.20.3.254, broadcast: 172.20.3.255)
+# Gateway vlan24 ( Red: 172.20.4.0 /23, Gateway: 172.20.4.1, Rangos 172.20.4.1 - 172.20.5.254, broadcast: 172.20.5.255)
+en
+conf t
+int gig0/1
+no ip add
+exit
+int gig0/1.89
+encapsulation dot1q 89
+ip add 172.20.0.1 255.255.254.0
+exit
+int gig0/1.75
+encapsulation dot1q 75
+ip add 172.20.2.1 255.255.254.0
+exit
+int gig0/1.24
+encapsulation dot1q 24
+ip add 172.20.4.1 255.255.254.0
+exit
