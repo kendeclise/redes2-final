@@ -58,10 +58,13 @@ en
 conf t
 router ospf 1
 router-id 2.2.2.2
-network 10.10.10.8 0.0.0.3 area 0
+#network 10.10.10.8 0.0.0.3 area 0
 network 10.10.11.8 0.0.0.3 area 0
 network 10.10.12.8 0.0.0.3 area 0
+network 64.0.0.0 0.255.255.255 area 0
 end
+
+
 
 # Router Router5(ISP1)
 en
@@ -316,3 +319,44 @@ ip access-list extended VLAN-BLOCK
  deny ip 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255
  deny ip 172.20.4.0 0.0.1.255 172.20.2.0 0.0.1.255
  permit ip any any
+
+
+
+
+== CONFIGURACIÓN NAT ==
+
+# NAT ESTÁTICO
+# R-SALIDA-LIMA
+
+en
+conf t
+int lo 0
+ip add 64.1.1.1 255.0.0.0
+
+ip nat inside source static 8.8.8.2 64.50.20.3
+
+int gig0/1
+ip nat inside
+exit
+int se0/0/0
+ip nat outside
+exit
+int se0/0/1
+ip nat outside
+exit
+
+
+
+
+# PAT
+# R-SALIDA-ICA
+
+en
+conf t
+
+access-list 1 permit 172.31.10.0 0.0.0.255
+ip nat pool PPAT 80.70.60.128 80.70.60.131 netmask 255.255.255.252
+ip nat inside source list 1 pool PPAT overload
+
+int gig0/1
+ip nat inside
