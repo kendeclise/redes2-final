@@ -316,12 +316,21 @@ deny ip 172.20.4.0 0.0.1.255 172.20.2.0 0.0.1.255
 permit ip any any
 exit
 
+ip access-list extended BLOCK-VLAN-24
+deny ip 172.20.2.0 0.0.1.255 172.20.4.0 0.0.1.255
+permit ip any any
+exit
+
 int gig0/1.89
 ip access-group VLAN89-ACCESO out
 exit
 
 int gig0/1.75
 ip access-group BLOCK-VLAN out
+exit
+
+int gig0/1.24
+ip access-group BLOCK-VLAN-24 out
 exit
 
 
