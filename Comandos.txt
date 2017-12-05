@@ -302,23 +302,29 @@ exit
 
 en
 conf t
+ip access-list extended VLAN89-ACCESO
+permit tcp 172.20.2.0 0.0.1.255 172.20.0.0 0.0.1.255 established
+permit tcp 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255 established
+permit icmp 172.20.2.0 0.0.1.255 172.20.0.0 0.0.1.255 echo-reply
+permit icmp 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255 echo-reply
+deny ip 172.20.2.0 0.0.1.255 172.20.0.0 0.0.1.255
+deny ip 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255
+permit ip any any
+
+ip access-list extended BLOCK-VLAN
+deny ip 172.20.4.0 0.0.1.255 172.20.2.0 0.0.1.255
+permit ip any any
+exit
+
+int gig0/1.89
+ip access-group VLAN89-ACCESO out
+exit
+
+int gig0/1.75
+ip access-group BLOCK-VLAN out
+exit
 
 
-
-
-
-ip access-list extended VLAN-BLOCK
- permit ip 172.20.0.0 0.0.1.255 any
- permit icmp 172.20.0.0 0.0.1.255 any
- deny ip 172.20.2.0 0.0.1.255 172.20.0.0 0.0.1.255
- deny ip 172.20.2.0 0.0.1.255 172.20.4.0 0.0.1.255
- deny icmp 172.20.2.0 0.0.1.255 172.20.4.0 0.0.1.255
- deny icmp 172.20.2.0 0.0.1.255 172.20.0.0 0.0.1.255
- deny icmp 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255
- deny icmp 172.20.4.0 0.0.1.255 172.20.2.0 0.0.1.255
- deny ip 172.20.4.0 0.0.1.255 172.20.0.0 0.0.1.255
- deny ip 172.20.4.0 0.0.1.255 172.20.2.0 0.0.1.255
- permit ip any any
 
 
 
@@ -344,6 +350,19 @@ exit
 int se0/0/1
 ip nat outside
 exit
+
+
+
+# NAT DINÁMICO
+# R-SALIDA-LIMA
+en
+conf t
+ip nat pool PDINAMICO 70.20.1.3 70.20.1.8 netmask 255.0.0.0
+access-list 15 permit 172.20.0.0 0.0.1.255
+ip nat inside source list 15 pool PDINAMICO
+
+int lo 1
+ip add 70.20.1.1 255.0.0.0
 
 
 
